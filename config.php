@@ -7,15 +7,15 @@ session_start();
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpass = "root";
-$dbname = "youtube-test";
+$dbname = "MovieFinder";
 
 /**
  * Voor de Windows gebruikers;
  */
-// $dbhost = "localhost";
-// $dbuser = "root";
-// $dbpass = "";
-// $dbname = "youtube-clone";
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpass = "";
+$dbname = "MovieFinder";
 
 $con = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
