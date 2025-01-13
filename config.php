@@ -4,10 +4,10 @@ session_start();
 /**
  * Voor de MAC gebruikers;
  */
-$dbhost = "localhost";
-$dbuser = "root";
-$dbpass = "root";
-$dbname = "MovieFinder";
+// $dbhost = "localhost";
+// $dbuser = "root";
+// $dbpass = "root";
+// $dbname = "MovieFinder";
 
 /**
  * Voor de Windows gebruikers;
@@ -15,7 +15,7 @@ $dbname = "MovieFinder";
 $dbhost = "localhost";
 $dbuser = "root";
 $dbpass = "";
-$dbname = "MovieFinder";
+$dbname = "youtube-clone";
 
 $con = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
