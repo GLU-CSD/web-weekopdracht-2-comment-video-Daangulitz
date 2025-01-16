@@ -1,9 +1,12 @@
 <?php
 include("config.php");
 include("reactions.php");
+include("Videos.php");
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $postArray = [
+        'id' => $_POST['id'] ?? '',
         'name' => $_POST['name'] ?? '',
         'email' => $_POST['email'] ?? '',
         'message' => $_POST['message'] ?? ''
@@ -16,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<p style='color: red;'>$error</p>";
         }
     }
-
     if (isset($setReaction['succes'])) {
         echo "<p style='color: green;'>{$setReaction['succes']}</p>";
         header("Location: " . $_SERVER['PHP_SELF']);
@@ -34,11 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/MfuLcO8clh0?si=3ytUpY3wqN6kQfwB" 
-        title="YouTube video player" frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-    </iframe>
+    foreach ($urlsArray as $url) {
+    echo "
+    <iframe width='560' height='315' src='$url'
+        title='YouTube video player' frameborder='0' 
+        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' 
+        referrerpolicy='strict-origin-when-cross-origin' allowfullscreen>
+    </iframe><br>";
+    }
 
     <h2>Hieronder komen reacties</h2>
 
