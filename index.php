@@ -25,6 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit(); 
     }
 }  
+
+$stmt = $pdo->query("SELECT url FROM videos");
+$videos = $stmt->fetchAll(PDO::FETCH_COLUMN);
 ?>
 
 <!DOCTYPE html>
@@ -36,17 +39,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    foreach ($urlsArray as $url) {
-    echo "
-    <iframe width='560' height='315' src='$url'
-        title='YouTube video player' frameborder='0' 
-        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' 
-        referrerpolicy='strict-origin-when-cross-origin' allowfullscreen>
-    </iframe><br>";
-    }
+     <div id="video-container">
+        <iframe id="video-player" src="<?php echo htmlspecialchars($videos[0]); ?>" allowfullscreen></iframe>
+    </div>
+    <button id="next-button">Next Video</button>
+    <script>
+        const videos = <?php echo json_encode($videos); ?>;
+        let currentIndex = 0;
 
-    <h2>Hieronder komen reacties</h2>
-
+        document.getElementById('next-button').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % videos.length; 
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.src = videos[currentIndex];
+        });
+    </script>
     <form action="" method="POST">
         <div>
             Naam: <input type="text" name="name" value="" placeholder="Hier je Naam">
