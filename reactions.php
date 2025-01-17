@@ -1,10 +1,10 @@
 <?php
 class Reactions
 {
-    static function setReaction($postArray)
+    static function setReaction($postArray, $videoId)
     {
         global $con;
-        $array = [];  
+        $array = [];
 
         if (!empty($postArray)) {
             if (isset($postArray['name']) && $postArray['name'] != '') {
@@ -23,13 +23,12 @@ class Reactions
                 $array['error'][] = "Message not set or empty.";
             }
             if (empty($array['error'])) {
-                $id = uniqid();
-    
-                $srqry = $con->prepare("INSERT INTO reactions (id, name, email, message) VALUES (?, ?, ?, ?)");
+
+                $srqry = $con->prepare("INSERT INTO reactions (id, name, email, message, video_id) VALUES (?, ?, ?, ?, ?)");
                 if ($srqry === false) {
                     $array['error'][] = "SQL error: " . mysqli_error($con);
                 } else {
-                    $srqry->bind_param('ssss',$id, $name, $email, $message);
+                    $srqry->bind_param('sssss', $id, $name, $email, $message, $videoId);
                     if ($srqry->execute() === false) {
                         $array['error'][] = "Execution error: " . mysqli_error($con);
                     } else {
@@ -42,15 +41,15 @@ class Reactions
         return $array;
     }
 
-    static function getReactions()
+    static function getReactions($videoId)
     {
         global $con;
         $array = [];
-
-        $grqry = $con->prepare("SELECT name, email, message FROM reactions ORDER by date_added DESC;");
+        $grqry = $con->prepare("SELECT name, email, message FROM reactions WHERE video_id = ? ORDER BY date_added DESC");
         if ($grqry === false) {
             prettyDump(mysqli_error($con));
         } else {
+            $grqry->bind_param('s', $videoId);
             $grqry->execute();
             $grqry->bind_result($name, $email, $message);
             while ($grqry->fetch()) {
@@ -66,7 +65,7 @@ class Reactions
     }
 
     function prettyDump($message)
-{
-    echo "<pre style='color: red;'>" . htmlspecialchars($message) . "</pre>";
-}
+    {
+        echo "<pre style='color: red;'>" . htmlspecialchars($message) . "</pre>";
+    }
 }
